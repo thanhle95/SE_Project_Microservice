@@ -17,32 +17,16 @@ db = SQLAlchemy(app)
 @dataclass
 class Section(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    course_name = db.Column(db.String(200))
-    faculty_name = db.Column(db.String(200))
+    course_id = db.Column(db.String(200))
+    block_id = db.Column(db.Integer)
     start_date = db.Column(db.Date)
     end_date = db.Column(db.Date)
     capacity = db.Column(db.Integer)
-    register = db.Column(db.Integer)
-
-
-@dataclass
-class FPPSchedule(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    section_id = db.Column(db.Integer)
-    block_id = db.Column(db.Integer)
-
-
-@dataclass
-class MPPSchedule(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    section_id = db.Column(db.Integer)
-    block_id = db.Column(db.Integer)
 
 
 @app.route('/')
 def index():
-    f = open("mess.txt", "r")
-    return f.read()
+    return "hello"
 
 
 def subcribeQueue():

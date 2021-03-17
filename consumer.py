@@ -1,5 +1,7 @@
-import pika
+import pika, json
 from datetime import datetime
+
+import schedule_generator
 
 host = "host.docker.internal"
 port = 5672
@@ -21,15 +23,9 @@ def rabbitmq_connector():
 
 
 def callback(ch, method, properties, body):
-    # data = json.load(body)
     print(" [x] Received %r" % body)
-    # print(data)
-    now = datetime.now()
-    current_time = now.strftime("%H:%M:%S")
-    f = open("mess.txt", "w")
-    print(type(current_time))
-    f.writelines(f" %r {current_time}" % body)
-    f.close()
+
+    schedule_generator.section_generator(body)
 
     if properties.content_type == 'schedule_generator':
         pass
@@ -50,6 +46,6 @@ def subcribe():
 
     print(' [*] Waiting for messages. To exit press CTRL+C')
 
-    channel.basic_consume(queue=queue, on_message_callback=callback)
+    channel.basic_consume(queue=queue, on_message_callback=callback, auto_ack=True)
 
     channel.start_consuming()
