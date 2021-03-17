@@ -401,3 +401,6 @@ migrations/script.py.mako
 migrations/__pycache__/env.cpython-39.pyc
 migrations/versions/ccda972c1d85_.py
 migrations/versions/__pycache__/ccda972c1d85_.cpython-39.pyc
+sample.json
+migrations/versions/a3430b9d6479_.py
+migrations/versions/__pycache__/a3430b9d6479_.cpython-39.pyc

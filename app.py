@@ -1,11 +1,10 @@
 from dataclasses import dataclass
 from threading import Timer
 
-from flask import Flask
+from flask import Flask, jsonify
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 
-import consumer
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = 'mysql://root:root@db/main'
@@ -16,6 +15,13 @@ db = SQLAlchemy(app)
 
 @dataclass
 class Section(db.Model):
+    id: int
+    course_id: int
+    block_id: int
+    start_date: str
+    end_date: str
+    capacity: str
+
     id = db.Column(db.Integer, primary_key=True)
     course_id = db.Column(db.String(200))
     block_id = db.Column(db.Integer)
@@ -29,11 +35,10 @@ def index():
     return "hello"
 
 
-def subcribeQueue():
-    consumer.subcribe()
+@app.route("/api/section", methods=['GET'])
+def get_all_section():
+    return jsonify(Section.query.all())
 
 
 if __name__ == '__main__':
-    r = Timer(1.0, subcribeQueue)
-    r.start()
     app.run(debug=True, host='0.0.0.0')

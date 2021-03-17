@@ -2,6 +2,7 @@ import pika, json
 from datetime import datetime
 
 import schedule_generator
+from app import Section, db
 
 host = "host.docker.internal"
 port = 5672
@@ -23,13 +24,26 @@ def rabbitmq_connector():
 
 
 def callback(ch, method, properties, body):
-    print(" [x] Received %r" % body)
+    # print(" [x] Received %r" % body)
+    data = json.loads(body)
+    print(type(data))
 
-    schedule_generator.section_generator(body)
+    section_list = schedule_generator.section_generator(data)
 
+    for section in section_list:
+        print("helllooo worrlddddddddd")
+        section_object = Section(course_id=section["courseId"],
+                                 block_id=section["blockId"],
+                                 start_date=section["startDate"],
+                                 end_date=section["endDate"],
+                                 capacity=section["capacity"])
+        db.session.add(section_object)
+        db.session.commit()
+    section = Section.query.all()
+    for sec in section:
+        print(sec.course_id)
     if properties.content_type == 'schedule_generator':
         pass
-
     elif properties.content_type == 'get_schedule':
         pass
 
@@ -49,3 +63,9 @@ def subcribe():
     channel.basic_consume(queue=queue, on_message_callback=callback, auto_ack=True)
 
     channel.start_consuming()
+
+    channel.close()
+
+
+if __name__ == '__main__':
+    subcribe()

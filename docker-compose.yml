@@ -8,7 +8,7 @@ services:
 #      - ./.docker/rabbitmq/data/:/var/lib/rabbitmq/mnesia
 #      - ./.docker/rabbitmq/logs/:/var/log/rabbitmq/
     environment:
-      RABBITMQ_ERLANG_COOKIE: "cookies"
+      RABBITMQ_ERLANG_COOKIE: "long cookies string"
 #      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
 #      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
     ports:
@@ -27,13 +27,13 @@ services:
     depends_on:
       - db
 
-#  queue:
-#    build:
-#      context: .
-#      dockerfile: Dockerfile
-#    command: "python consumer.py"
-#    depends_on:
-#      - db
+  queue:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: "python consumer.py"
+    depends_on:
+      - db
 
   db:
     image: library/mysql:5.7.22
