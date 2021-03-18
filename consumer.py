@@ -30,22 +30,18 @@ def callback(ch, method, properties, body):
 
     section_list = schedule_generator.section_generator(data)
 
+    Section.query.delete()
+
     for section in section_list:
         print("helllooo worrlddddddddd")
         section_object = Section(course_id=section["courseId"],
                                  block_id=section["blockId"],
                                  start_date=section["startDate"],
                                  end_date=section["endDate"],
-                                 capacity=section["capacity"])
+                                 capacity=section["capacity"],
+                                 entry_id=section["entryId"])
         db.session.add(section_object)
         db.session.commit()
-    section = Section.query.all()
-    for sec in section:
-        print(sec.course_id)
-    if properties.content_type == 'schedule_generator':
-        pass
-    elif properties.content_type == 'get_schedule':
-        pass
 
 
 def publish(messages):

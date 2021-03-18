@@ -21,6 +21,7 @@ class Section(db.Model):
     start_date: str
     end_date: str
     capacity: str
+    entry_id: int
 
     id = db.Column(db.Integer, primary_key=True)
     course_id = db.Column(db.String(200))
@@ -28,11 +29,7 @@ class Section(db.Model):
     start_date = db.Column(db.Date)
     end_date = db.Column(db.Date)
     capacity = db.Column(db.Integer)
-
-
-@app.route('/')
-def index():
-    return "hello"
+    entry_id = db.Column(db.Integer)
 
 
 @app.route("/api/section", methods=['GET'])
