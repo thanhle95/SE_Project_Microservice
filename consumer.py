@@ -24,16 +24,13 @@ def rabbitmq_connector():
 
 
 def callback(ch, method, properties, body):
-    # print(" [x] Received %r" % body)
     data = json.loads(body)
-    print(type(data))
 
     section_list = schedule_generator.section_generator(data)
 
     Section.query.delete()
 
     for section in section_list:
-        print("helllooo worrlddddddddd")
         section_object = Section(course_id=section["courseId"],
                                  block_id=section["blockId"],
                                  start_date=section["startDate"],
